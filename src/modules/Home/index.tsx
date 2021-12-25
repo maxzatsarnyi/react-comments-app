@@ -1,40 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './index.scss';
 import { CommentForm } from '../../app/components/CommentForm/index';
 import { Comment } from '../../app/components/Comment/index';
-import { ICommentChild } from '../../entities/index';
+import { IComment } from '../../entities/index';
+import { loadComments } from '../../app/store/actions/comments';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store/index';
+import { v4 as uuid } from 'uuid';
 
 export const HomePage = () => {
-  const comments: ICommentChild[] = [
-    {
-      id: 1,
-      name: 'Susan',
-      receiverName: 'Alice',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit turpis ultrices massa?',
-      date: '2022-09-12',
-    },
-    {
-      id: 2,
-      name: 'Susan',
-      receiverName: 'Alice',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit turpis ultrices massa?',
-      date: '2022-09-12',
-    },
-    {
-      id: 3,
-      name: 'Susan',
-      receiverName: 'Alice',
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit turpis ultrices massa?',
-      date: '2022-09-12',
-    },
-  ];
+  const dispatch = useDispatch();
+  const comments: IComment[] = useSelector(
+    (state: RootState) => state.comments
+  );
+
+  useEffect(() => {
+    dispatch(loadComments());
+  }, [dispatch]);
+
   return (
     <div className='homepage'>
       <div className='homepage__container'>
         <CommentForm />
         <ul className='homepage__comments-list'>
           {comments &&
-            comments.map((comment, index) => <Comment key={index} />)}
+            comments.map((comment) => (
+              <Comment key={uuid()} comment={comment} />
+            ))}
         </ul>
       </div>
     </div>
