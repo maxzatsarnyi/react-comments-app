@@ -1,6 +1,7 @@
 @import '../../index.scss';
 
 .homepage {
+    padding: 0 15px 50px;
     &__container {
         @extend %wrapper;
     }

@@ -35,7 +35,7 @@ export const ChildComment: React.FC<Props> = ({
   return (
     <div className='comment-child'>
       <div className='comment-child__container'>
-        <img src={img.src} alt='user' className='comment__user' />
+        <img src={img.src} alt='user' className='comment-child__user' />
         <div className='comment-child__content'>
           <div className='comment-child__name-wrap'>
             <span className='comment-child__name'>{reply.name}</span>
