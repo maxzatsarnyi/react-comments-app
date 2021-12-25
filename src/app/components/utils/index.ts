@@ -1,3 +1,4 @@
+// return date in format year-month-day from number value
 export function getDate(value: number): string {
   const date = new Date(value);
   const [month, day, year] = [

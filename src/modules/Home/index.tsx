@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.scss';
 import { CommentForm } from '../../app/components/CommentForm/index';
 import { Comment } from '../../app/components/Comment/index';
@@ -13,6 +13,10 @@ export const HomePage = () => {
   const comments: IComment[] = useSelector(
     (state: RootState) => state.comments
   );
+  const [activeComment, setActiveComment] = useState({
+    id: 0,
+    type: '',
+  });
 
   useEffect(() => {
     dispatch(loadComments());
@@ -25,7 +29,12 @@ export const HomePage = () => {
         <ul className='homepage__comments-list'>
           {comments &&
             comments.map((comment) => (
-              <Comment key={uuid()} comment={comment} />
+              <Comment
+                key={uuid()}
+                comment={comment}
+                activeComment={activeComment}
+                setActiveComment={setActiveComment}
+              />
             ))}
         </ul>
       </div>

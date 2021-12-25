@@ -10,6 +10,9 @@
     &__user {
         display: inline-block;
         max-width: 88px;
+        height: 88px;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
     &__content {
