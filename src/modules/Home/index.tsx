@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './index.scss';
 import { CommentForm } from '../../app/components/CommentForm/index';
 import { Comment } from '../../app/components/Comment/index';
@@ -16,6 +16,7 @@ export const HomePage = () => {
   const [activeComment, setActiveComment] = useState({
     id: 0,
     type: '',
+    component: '',
   });
 
   useEffect(() => {

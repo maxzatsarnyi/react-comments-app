@@ -2,24 +2,71 @@ import React from 'react';
 import './index.scss';
 import { IReply } from '../../../entities/index';
 import { getDate } from '../utils';
+import { deleteReply } from '../../store/actions/comments';
+import { useDispatch } from 'react-redux';
+import { ReplyChildForm } from '../ReplyChildForm';
 
-export const ChildComment: React.FC<{ reply: IReply; receiver: string }> = ({
+interface Props {
+  reply: IReply;
+  receiver: string;
+  activeComment: {
+    id: number;
+    type: string;
+    component: string;
+  };
+  setActiveComment: React.Dispatch<
+    React.SetStateAction<{
+      id: number;
+      type: string;
+      component: string;
+    }>
+  >;
+}
+
+export const ChildComment: React.FC<Props> = ({
   reply,
   receiver,
+  activeComment,
+  setActiveComment,
 }) => {
+  const dispatch = useDispatch();
   const img = new Image();
   img.src = reply.avatar;
   return (
     <div className='comment-child'>
-      <img src={img.src} alt='user' className='comment__user' />
-      <div className='comment-child__content'>
-        <div className='comment-child__name-wrap'>
-          <span className='comment-child__name'>{reply.name}</span>
-          <span className='comment-child__receiver'>to {receiver}</span>
-          <span className='comment-child__date'>{getDate(reply.date)}</span>
+      <div className='comment-child__container'>
+        <img src={img.src} alt='user' className='comment__user' />
+        <div className='comment-child__content'>
+          <div className='comment-child__name-wrap'>
+            <span className='comment-child__name'>{reply.name}</span>
+            <span className='comment-child__receiver'>to {receiver}</span>
+            <span className='comment-child__date'>{getDate(reply.date)}</span>
+          </div>
+          <div className='comment-child__desc'>{reply.body}</div>
+          <div className='comment-child__options'>
+            <span
+              onClick={() =>
+                setActiveComment({
+                  id: reply.id,
+                  type: 'edit',
+                  component: 'child',
+                })
+              }
+            >
+              Edit
+            </span>
+            <span onClick={() => dispatch(deleteReply(reply.id))}>Delete</span>
+          </div>
         </div>
-        <div className='comment-child__desc'>{reply.body}</div>
       </div>
+
+      {activeComment.id === reply.id && activeComment.component === 'child' && (
+        <ReplyChildForm
+          activeComment={activeComment}
+          setActiveComment={setActiveComment}
+          reply={reply}
+        />
+      )}
     </div>
   );
 };

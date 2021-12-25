@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './index.scss';
 import { createComment } from '../../store/actions/comments';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuid } from 'uuid';
 import faker from 'faker';
 import { RootState } from '../../../app/store/index';
 
@@ -27,8 +26,6 @@ export const CommentForm = () => {
       );
     }
   };
-
-  useEffect(() => {}, [dispatch]);
 
   return (
     <div className='comment-form'>

@@ -1,3 +1,4 @@
+import { COMMENTS_REPLY_UPDATE } from './../actions/comments';
 import { IComment } from './../../../entities/index';
 import { IPayload } from '../../../interfaces/redux';
 import {
@@ -5,6 +6,7 @@ import {
   COMMENTS_DELETE,
   COMMENTS_LOAD,
   COMMENTS_REPLY,
+  COMMENTS_REPLY_DELETE,
   COMMENTS_UPDATE,
 } from '../actions/comments';
 
@@ -39,6 +41,21 @@ export const commentsReducer = (state: IComment[], action: IPayload<any>) => {
           };
         }
         return comment;
+      });
+
+    case COMMENTS_REPLY_DELETE:
+      return state.map((comment) => {
+        return comment.replies.filter((reply) => reply.id != action.payload);
+      });
+
+    case COMMENTS_REPLY_UPDATE:
+      return state.map((comment) => {
+        return comment.replies.map((reply) => {
+          if (reply.id == action.payload.id) {
+            return action.payload;
+          }
+          return reply;
+        });
       });
     default: {
       return [...initialState];

@@ -5,21 +5,21 @@ import { ChildComment } from '../ChildComment/index';
 import { IComment } from '../../../entities/index';
 import { getDate } from '../utils';
 import { v4 as uuid } from 'uuid';
-import { deleteComment, updateComment } from '../../store/actions/comments';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../app/store/index';
-import { getCommentById } from '../../store/selectors';
+import { deleteComment } from '../../store/actions/comments';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   comment: IComment;
   activeComment: {
     id: number;
     type: string;
+    component: string;
   };
   setActiveComment: React.Dispatch<
     React.SetStateAction<{
       id: number;
       type: string;
+      component: string;
     }>
   >;
 }
@@ -46,7 +46,13 @@ export const Comment: React.FC<Props> = ({
           <div className='comment__desc'>{comment.body}</div>
           <div className='comment__options'>
             <span
-              onClick={() => setActiveComment({ id: comment.id, type: 'edit' })}
+              onClick={() =>
+                setActiveComment({
+                  id: comment.id,
+                  type: 'edit',
+                  component: 'comment',
+                })
+              }
             >
               Edit
             </span>
@@ -55,27 +61,34 @@ export const Comment: React.FC<Props> = ({
             </span>
             <span
               onClick={() =>
-                setActiveComment({ id: comment.id, type: 'reply' })
+                setActiveComment({
+                  id: comment.id,
+                  type: 'reply',
+                  component: 'comment',
+                })
               }
             >
               Reply
             </span>
           </div>
-          {activeComment.id === comment.id && (
-            <ReplyForm
-              receiverName={comment.name}
-              message={message}
-              setMessage={setMessage}
-              activeComment={activeComment}
-              setActiveComment={setActiveComment}
-            />
-          )}
+          {activeComment.id === comment.id &&
+            activeComment.component === 'comment' && (
+              <ReplyForm
+                receiverName={comment.name}
+                message={message}
+                setMessage={setMessage}
+                activeComment={activeComment}
+                setActiveComment={setActiveComment}
+              />
+            )}
           {comment.replies &&
             comment.replies.map((reply) => (
               <ChildComment
                 key={uuid()}
                 reply={reply}
                 receiver={comment.name}
+                activeComment={activeComment}
+                setActiveComment={setActiveComment}
               />
             ))}
         </div>

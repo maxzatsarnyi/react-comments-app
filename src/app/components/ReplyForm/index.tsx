@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { createReply, updateComment } from '../../store/actions/comments';
@@ -14,11 +14,13 @@ interface Props {
   activeComment: {
     id: number;
     type: string;
+    component: string;
   };
   setActiveComment: React.Dispatch<
     React.SetStateAction<{
       id: number;
       type: string;
+      component: string;
     }>
   >;
 }
@@ -35,7 +37,10 @@ export const ReplyForm: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    if (activeComment.type === 'edit') {
+    if (
+      activeComment.type === 'edit' &&
+      activeComment.component === 'comment'
+    ) {
       if (isExist) {
         const updatedComment = {
           ...isExist,
@@ -44,7 +49,10 @@ export const ReplyForm: React.FC<Props> = ({
         };
         dispatch(updateComment(activeComment.id, updatedComment));
       }
-    } else if (activeComment.type === 'reply') {
+    } else if (
+      activeComment.type === 'reply' &&
+      activeComment.component === 'comment'
+    ) {
       const newReply = {
         id: Number(uuid()),
         name: faker.name.findName(),
@@ -64,7 +72,7 @@ export const ReplyForm: React.FC<Props> = ({
         </span>
         <span
           className='reply-form__btn-cancel'
-          onClick={() => setActiveComment({ id: 0, type: '' })}
+          onClick={() => setActiveComment({ id: 0, type: '', component: '' })}
         >
           Cancel
         </span>

@@ -1,4 +1,4 @@
-import { IComment } from './../../../entities/index';
+import { IComment, IReply } from './../../../entities/index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
 // import { toast } from 'react-toastify';
@@ -7,6 +7,8 @@ export const COMMENTS_CREATE = 'COMMENTS_CREATE';
 export const COMMENTS_DELETE = 'COMMENTS_DELETE';
 export const COMMENTS_UPDATE = 'COMMENTS_UPDATE';
 export const COMMENTS_REPLY = 'COMMENTS_REPLY';
+export const COMMENTS_REPLY_DELETE = 'COMMENTS_REPLY_DELETE';
+export const COMMENTS_REPLY_UPDATE = 'COMMENTS_REPLY_UPDATE';
 
 const currentUrl = 'http://localhost:8000';
 
@@ -102,7 +104,44 @@ export const createReply =
       .then((response) => {
         const { data } = response;
         dispatch(createReplyAction(data));
-        console.log(data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+export const deleteReplyAction = (id: number) => ({
+  type: COMMENTS_REPLY_DELETE,
+  payload: id,
+});
+
+export const deleteReply = (id: number) => async (dispatch: Dispatch) => {
+  return axios
+    .delete(`${currentUrl}/comments/replies/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(() => {
+      dispatch(deleteReplyAction(id));
+    })
+    .catch((err) => console.error(err));
+};
+
+export const updateReplyAction = (comment: IComment) => ({
+  type: COMMENTS_REPLY_UPDATE,
+  payload: comment,
+});
+
+export const updateReply =
+  (id: number, data: IReply) => async (dispatch: Dispatch) => {
+    return axios
+      .put(`${currentUrl}/comments/replies/${id}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        const { data } = response;
+        dispatch(updateReplyAction(data));
       })
       .catch((err) => console.error(err));
   };
