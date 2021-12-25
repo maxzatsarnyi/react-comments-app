@@ -1,7 +1,7 @@
 import { IComment, IReply } from './../../../entities/index';
 import { Dispatch } from 'redux';
 import axios from 'axios';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 export const COMMENTS_LOAD = 'COMMENTS_LOAD';
 export const COMMENTS_CREATE = 'COMMENTS_CREATE';
 export const COMMENTS_DELETE = 'COMMENTS_DELETE';
@@ -45,6 +45,7 @@ export const createComment = (data: IComment) => async (dispatch: Dispatch) => {
     })
     .then(() => {
       dispatch(addComment(data));
+      toast.success('Comment has been created!');
     })
     .catch((err) => console.error(err));
 };
@@ -63,6 +64,7 @@ export const deleteComment = (id: number) => async (dispatch: Dispatch) => {
     })
     .then(() => {
       dispatch(removeComment(id));
+      toast.success('Comment has been deleted!');
     })
     .catch((err) => console.error(err));
 };
@@ -83,6 +85,7 @@ export const updateComment =
       .then((response) => {
         const { data } = response;
         dispatch(updateCommentAction(data));
+        toast.success('Comment has been updated!');
       })
       .catch((err) => console.error(err));
   };
@@ -104,6 +107,7 @@ export const createReply =
       .then((response) => {
         const { data } = response;
         dispatch(createReplyAction(data));
+        toast.success(`Response has been posted!`);
       })
       .catch((err) => console.error(err));
   };

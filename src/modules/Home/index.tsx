@@ -7,6 +7,8 @@ import { loadComments } from '../../app/store/actions/comments';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store/index';
 import { v4 as uuid } from 'uuid';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -38,6 +40,17 @@ export const HomePage = () => {
               />
             ))}
         </ul>
+        <ToastContainer
+          position='bottom-left'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </div>
   );
