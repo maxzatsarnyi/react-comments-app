@@ -1,0 +1,52 @@
+@import "/src/index.scss";
+
+.comment-child {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    // justify-content: space-between;
+    align-items: flex-start;
+
+    &__user {
+        display: inline-block;
+        max-width: 88px;
+    }
+
+    &__content {
+        margin-left: 32px;
+    }
+
+    &__name-wrap {
+        span {
+            padding-right: 16px;
+            &:last-child { padding-right: 0; }
+        }
+    }
+    &__name {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    &__receiver {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        color: $color-sec;
+    }
+
+    &__date {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        color: $color-sec;
+    }
+
+    &__desc {
+        margin-top: 16px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 22px;
+        line-height: 30px;
+    }
+}
