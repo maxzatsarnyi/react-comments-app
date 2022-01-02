@@ -81,16 +81,15 @@ export const Comment: React.FC<Props> = ({
                 setActiveComment={setActiveComment}
               />
             )}
-          {comment.replies &&
-            comment.replies.map((reply) => (
-              <ChildComment
-                key={uuid()}
-                reply={reply}
-                receiver={comment.name}
-                activeComment={activeComment}
-                setActiveComment={setActiveComment}
-              />
-            ))}
+          {comment?.replies.map((reply) => (
+            <ChildComment
+              key={uuid()}
+              reply={reply}
+              receiver={comment.name}
+              activeComment={activeComment}
+              setActiveComment={setActiveComment}
+            />
+          ))}
         </div>
       </div>
     </li>
