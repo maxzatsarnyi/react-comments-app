@@ -1,16 +1,23 @@
-import { IComment, IReply } from './../../../entities/index';
+import { IComment, IReply } from '../../../entities/comment';
 import { Dispatch } from 'redux';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-export const COMMENTS_LOAD = 'COMMENTS_LOAD';
-export const COMMENTS_CREATE = 'COMMENTS_CREATE';
-export const COMMENTS_DELETE = 'COMMENTS_DELETE';
-export const COMMENTS_UPDATE = 'COMMENTS_UPDATE';
-export const COMMENTS_REPLY = 'COMMENTS_REPLY';
-export const COMMENTS_REPLY_DELETE = 'COMMENTS_REPLY_DELETE';
-export const COMMENTS_REPLY_UPDATE = 'COMMENTS_REPLY_UPDATE';
+import {
+  COMMENTS_CREATE,
+  COMMENTS_DELETE,
+  COMMENTS_LOAD,
+  COMMENTS_REPLY,
+  COMMENTS_REPLY_DELETE,
+  COMMENTS_UPDATE,
+  COMMENTS_REPLY_UPDATE,
+} from '../constants';
 
-const currentUrl = 'http://localhost:8000';
+const axiosAPI = axios.create({
+  baseURL: 'http://localhost:8000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export const loadCommentsAction = (value: any[]) => ({
   type: COMMENTS_LOAD,
@@ -18,17 +25,10 @@ export const loadCommentsAction = (value: any[]) => ({
 });
 
 export const loadComments = () => async (dispatch: Dispatch) => {
-  return axios
-    .get(`${currentUrl}/comments?_embed=replies`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => {
-      const { data } = response;
-      dispatch(loadCommentsAction(data));
-    })
-    .catch((err) => console.error(err));
+  return axiosAPI
+    .get(`/comments?_embed=replies`)
+    .then((response) => dispatch(loadCommentsAction(response.data)))
+    .catch(console.error);
 };
 
 export const addComment = (comment: IComment) => ({
@@ -37,17 +37,13 @@ export const addComment = (comment: IComment) => ({
 });
 
 export const createComment = (data: IComment) => async (dispatch: Dispatch) => {
-  return axios
-    .post(`${currentUrl}/comments`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+  return axiosAPI
+    .post(`/comments`, data)
     .then(() => {
       dispatch(addComment(data));
       toast.success('Comment has been created!');
     })
-    .catch((err) => console.error(err));
+    .catch(console.error);
 };
 
 export const removeComment = (id: number) => ({
@@ -56,17 +52,13 @@ export const removeComment = (id: number) => ({
 });
 
 export const deleteComment = (id: number) => async (dispatch: Dispatch) => {
-  return axios
-    .delete(`${currentUrl}/comments/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+  return axiosAPI
+    .delete(`/comments/${id}`)
     .then(() => {
       dispatch(removeComment(id));
       toast.success('Comment has been deleted!');
     })
-    .catch((err) => console.error(err));
+    .catch(console.error);
 };
 
 export const updateCommentAction = (comment: IComment) => ({
@@ -76,18 +68,13 @@ export const updateCommentAction = (comment: IComment) => ({
 
 export const updateComment =
   (id: number, data: IComment) => async (dispatch: Dispatch) => {
-    return axios
-      .put(`${currentUrl}/comments/${id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    return axiosAPI
+      .put(`/comments/${id}`, data)
       .then((response) => {
-        const { data } = response;
-        dispatch(updateCommentAction(data));
+        dispatch(updateCommentAction(response.data));
         toast.success('Comment has been updated!');
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   };
 
 export const createReplyAction = (comment: Omit<IComment, 'replies'>) => ({
@@ -98,18 +85,13 @@ export const createReplyAction = (comment: Omit<IComment, 'replies'>) => ({
 export const createReply =
   (id: number, data: Omit<IComment, 'replies'>) =>
   async (dispatch: Dispatch) => {
-    return axios
-      .post(`${currentUrl}/comments/${id}/replies`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    return axiosAPI
+      .post(`/comments/${id}/replies`, data)
       .then((response) => {
-        const { data } = response;
-        dispatch(createReplyAction(data));
+        dispatch(createReplyAction(response.data));
         toast.success(`Response has been posted!`);
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   };
 
 export const deleteReplyAction = (id: number) => ({
@@ -118,16 +100,10 @@ export const deleteReplyAction = (id: number) => ({
 });
 
 export const deleteReply = (id: number) => async (dispatch: Dispatch) => {
-  return axios
-    .delete(`${currentUrl}/comments/replies/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(() => {
-      dispatch(deleteReplyAction(id));
-    })
-    .catch((err) => console.error(err));
+  return axiosAPI
+    .delete(`/comments/replies/${id}`)
+    .then(() => dispatch(deleteReplyAction(id)))
+    .catch(console.error);
 };
 
 export const updateReplyAction = (comment: IComment) => ({
@@ -137,15 +113,8 @@ export const updateReplyAction = (comment: IComment) => ({
 
 export const updateReply =
   (id: number, data: IReply) => async (dispatch: Dispatch) => {
-    return axios
-      .put(`${currentUrl}/comments/replies/${id}`, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => {
-        const { data } = response;
-        dispatch(updateReplyAction(data));
-      })
-      .catch((err) => console.error(err));
+    return axiosAPI
+      .put(`/comments/replies/${id}`, data)
+      .then((response) => dispatch(updateReplyAction(response.data)))
+      .catch(console.error);
   };

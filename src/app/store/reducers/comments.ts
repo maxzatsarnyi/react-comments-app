@@ -1,6 +1,5 @@
-import { COMMENTS_REPLY_UPDATE } from './../actions/comments';
-import { IComment } from './../../../entities/index';
-import { IPayload } from '../../../interfaces/redux';
+import { IComment } from '../../../entities/comment';
+import { IPayload } from '../../../entities/redux';
 import {
   COMMENTS_CREATE,
   COMMENTS_DELETE,
@@ -8,11 +7,15 @@ import {
   COMMENTS_REPLY,
   COMMENTS_REPLY_DELETE,
   COMMENTS_UPDATE,
-} from '../actions/comments';
+  COMMENTS_REPLY_UPDATE,
+} from '../constants';
 
 const initialState: IComment[] = [];
 
-export const commentsReducer = (state: IComment[], action: IPayload<any>) => {
+export const commentsReducer = (
+  state: IComment[] = initialState,
+  action: IPayload<any>
+) => {
   switch (action.type) {
     case COMMENTS_LOAD:
       return action.payload;
@@ -57,8 +60,7 @@ export const commentsReducer = (state: IComment[], action: IPayload<any>) => {
           return reply;
         });
       });
-    default: {
-      return [...initialState];
-    }
+    default:
+      return state;
   }
 };

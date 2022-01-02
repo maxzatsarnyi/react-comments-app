@@ -83,7 +83,7 @@ export const ReplyForm: React.FC<Props> = ({
         placeholder='Your message'
         className='reply-form__field'
       />
-      <button className='reply-form__button' onClick={() => handleSubmit()}>
+      <button className='reply-form__button' onClick={handleSubmit}>
         Send
       </button>
     </div>

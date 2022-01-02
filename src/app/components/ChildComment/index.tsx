@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
-import { IReply } from '../../../entities/index';
-import { getDate } from '../utils';
+import { IReply } from '../../../entities/comment';
+import { getDate } from '../../../utils/utils';
 import { deleteReply } from '../../store/actions/comments';
 import { useDispatch } from 'react-redux';
 import { ReplyChildForm } from '../ReplyChildForm';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateReply } from '../../store/actions/comments';
 import './index.scss';
-import { IReply } from '../../../entities';
+import { IReply } from '../../../entities/comment';
 
 interface Props {
   activeComment: {

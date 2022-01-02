@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 import { CommentForm } from '../../app/components/CommentForm/index';
 import { Comment } from '../../app/components/Comment/index';
-import { IComment } from '../../entities/index';
+import { IComment } from '../../entities/comment';
 import { loadComments } from '../../app/store/actions/comments';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store/index';
