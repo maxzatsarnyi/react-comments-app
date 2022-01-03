@@ -25,10 +25,12 @@ export const loadCommentsAction = (value: any[]) => ({
 });
 
 export const loadComments = () => async (dispatch: Dispatch) => {
-  return axiosAPI
-    .get(`/comments?_embed=replies`)
-    .then((response) => dispatch(loadCommentsAction(response.data)))
-    .catch(console.error);
+  try {
+    const response = await axiosAPI.get(`/comments?_embed=replies`);
+    dispatch(loadCommentsAction(response.data));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const addComment = (comment: IComment) => ({
@@ -37,13 +39,13 @@ export const addComment = (comment: IComment) => ({
 });
 
 export const createComment = (data: IComment) => async (dispatch: Dispatch) => {
-  return axiosAPI
-    .post(`/comments`, data)
-    .then(() => {
-      dispatch(addComment(data));
-      toast.success('Comment has been created!');
-    })
-    .catch(console.error);
+  try {
+    await axiosAPI.post(`/comments`, data);
+    dispatch(addComment(data));
+    toast.success('Comment has been created!');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const removeComment = (id: number) => ({
@@ -52,13 +54,13 @@ export const removeComment = (id: number) => ({
 });
 
 export const deleteComment = (id: number) => async (dispatch: Dispatch) => {
-  return axiosAPI
-    .delete(`/comments/${id}`)
-    .then(() => {
-      dispatch(removeComment(id));
-      toast.success('Comment has been deleted!');
-    })
-    .catch(console.error);
+  try {
+    await axiosAPI.delete(`/comments/${id}`);
+    dispatch(removeComment(id));
+    toast.success('Comment has been deleted!');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const updateCommentAction = (comment: IComment) => ({
@@ -68,13 +70,13 @@ export const updateCommentAction = (comment: IComment) => ({
 
 export const updateComment =
   (id: number, data: IComment) => async (dispatch: Dispatch) => {
-    return axiosAPI
-      .put(`/comments/${id}`, data)
-      .then((response) => {
-        dispatch(updateCommentAction(response.data));
-        toast.success('Comment has been updated!');
-      })
-      .catch(console.error);
+    try {
+      const response = await axiosAPI.put(`/comments/${id}`, data);
+      dispatch(updateCommentAction(response.data));
+      toast.success('Comment has been updated!');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 export const createReplyAction = (comment: Omit<IComment, 'replies'>) => ({
@@ -85,13 +87,13 @@ export const createReplyAction = (comment: Omit<IComment, 'replies'>) => ({
 export const createReply =
   (id: number, data: Omit<IComment, 'replies'>) =>
   async (dispatch: Dispatch) => {
-    return axiosAPI
-      .post(`/comments/${id}/replies`, data)
-      .then((response) => {
-        dispatch(createReplyAction(response.data));
-        toast.success(`Response has been posted!`);
-      })
-      .catch(console.error);
+    try {
+      const response = await axiosAPI.post(`/comments/${id}/replies`, data);
+      dispatch(createReplyAction(response.data));
+      toast.success(`Response has been posted!`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 export const deleteReplyAction = (id: number) => ({
@@ -100,10 +102,12 @@ export const deleteReplyAction = (id: number) => ({
 });
 
 export const deleteReply = (id: number) => async (dispatch: Dispatch) => {
-  return axiosAPI
-    .delete(`/comments/replies/${id}`)
-    .then(() => dispatch(deleteReplyAction(id)))
-    .catch(console.error);
+  try {
+    await axiosAPI.delete(`/comments/replies/${id}`);
+    dispatch(deleteReplyAction(id));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const updateReplyAction = (comment: IComment) => ({
@@ -113,8 +117,10 @@ export const updateReplyAction = (comment: IComment) => ({
 
 export const updateReply =
   (id: number, data: IReply) => async (dispatch: Dispatch) => {
-    return axiosAPI
-      .put(`/comments/replies/${id}`, data)
-      .then((response) => dispatch(updateReplyAction(response.data)))
-      .catch(console.error);
+    try {
+      const response = await axiosAPI.put(`/comments/replies/${id}`, data);
+      dispatch(updateReplyAction(response.data));
+    } catch (error) {
+      console.error(error);
+    }
   };
